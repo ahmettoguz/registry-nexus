@@ -1,0 +1,29 @@
+####################################### Services
+services:
+  service-nexus:
+    image: sonatype/nexus:2.15.2
+    container_name: container-nexus
+
+    # env_file:
+    #   - ./.env
+
+    # volumes:
+      # - nexus-data:/nexus-data
+
+    # networks:
+    #   - network-registry
+
+    restart: ${RESTART_POLICY}
+
+    ports:
+      - "8081:8081"
+
+####################################### Networks
+# networks:
+#   network-registry:
+#     external: true
+
+####################################### Volumes
+# volumes:
+#   volume-nexus:
+#     name: volume-nexus
