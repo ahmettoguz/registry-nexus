@@ -1,13 +1,11 @@
 ####################################### Services
 services:
   service-nexus:
-    image: sonatype/nexus:2.15.2
+    image: sonatype/nexus3:3.82.0
     container_name: container-nexus
 
-    # env_file:
-    #   - ./.env
-
-    # volumes:
+    env_file:
+      - ./.env
       # - nexus-data:/nexus-data
 
     # networks:
@@ -17,7 +15,6 @@ services:
 
     ports:
       - "8081:8081"
-
 ####################################### Networks
 # networks:
 #   network-registry:
