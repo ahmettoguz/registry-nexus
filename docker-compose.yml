@@ -3,24 +3,22 @@ services:
   service-nexus:
     image: sonatype/nexus3:3.82.0
     container_name: container-nexus
-
     env_file:
       - ./.env
-      # - nexus-data:/nexus-data
-
-    # networks:
-    #   - network-registry
-
+    volumes:
+      - volume-nexus:/nexus-data
+    networks:
+      - network-registry
     restart: ${RESTART_POLICY}
-
     ports:
       - "8081:8081"
+
 ####################################### Networks
-# networks:
-#   network-registry:
-#     external: true
+networks:
+  network-registry:
+    external: true
 
 ####################################### Volumes
-# volumes:
-#   volume-nexus:
-#     name: volume-nexus
+volumes:
+  volume-nexus:
+    name: volume-nexus
