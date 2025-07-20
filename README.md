@@ -89,7 +89,7 @@ Publish npm package to nexus registry with following command.
 npm publish --registry https://nexus-registry.micro-local.net/repository/npm-hosted
 ```
 
-### Restrict Access
+### User Management
 
 To be able to modify user access, for example think that there are 2 team as ui and ux and these teams should be able to change and view their repositories and not intercept each other.
 So first create content selector with this expression for ux team.
