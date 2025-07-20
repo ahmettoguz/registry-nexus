@@ -16,7 +16,7 @@
 - [Features](#features)
 - [Releases](#releases)
 - [System Startup](#system-startup)
-- [Access Management](#user-and-access-management)
+- [Access Management](#access-management)
 - [NPM Management](#npm-management)
 - [Contributors](#contributors)
 
