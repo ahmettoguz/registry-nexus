@@ -57,11 +57,14 @@ docker container exec container-nexus cat /nexus-data/admin.password
 docker run --rm alpine/openssl rand -base64 32
 ```
 
+### Create npm Repositories
+
 After launch registry, create npm repositories.
 Create npm-hosted repository as hosted to be able to create own packages.
 Create npm-proxy repository as proxy to be able to get packages from default remote repository.
 Create npm-group repository as group to be able to manage both own and shared packages.
 
+### Configuration
 Modify `~/.npmrc` file with npm-group url.
 
 ```
@@ -72,17 +75,34 @@ strict-ssl=false
 Login npm registry.
 
 ```
-npm login
+npm login --registry https://nexus-registry.micro-local.net/repository/npm-group
 ```
 
 Navigate to Security -> Realms.
 Add `npm Bearer Token Realm` as active realm.
 
+
+### Publish npm Package
 Publish npm package to nexus registry with following command.
 
 ```
 npm publish --registry https://nexus-registry.micro-local.net/repository/npm-hosted
 ```
+
+### Restrict Access
+
+To be able to modify user access, for example think that there are 2 team as ui and ux and these teams should be able to change and view their repositories and not intercept each other.
+So first create content selector with this expression for ux team.
+
+```
+path =~ "@ux.*"
+```
+
+Create privilige with type `repository content selectory` and format `npm`with actions: `browse read edit`.
+
+Create role for that priviliage and create user for that role.
+
+and this user will be able to interactwith just ux repo.
 
 <br/>
 
