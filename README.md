@@ -46,6 +46,7 @@ docker logs -f                   container-nexus
 ```
 
 - Get initial admin password and login.
+
 ```
 docker container exec container-nexus cat /nexus-data/admin.password
 ```
@@ -54,6 +55,33 @@ docker container exec container-nexus cat /nexus-data/admin.password
 
 ```
 docker run --rm alpine/openssl rand -base64 32
+```
+
+After launch registry, create npm repositories.
+Create npm-hosted repository as hosted to be able to create own packages.
+Create npm-proxy repository as proxy to be able to get packages from default remote repository.
+Create npm-group repository as group to be able to manage both own and shared packages.
+
+Modify `~/.npmrc` file with npm-group url.
+
+```
+registry=https://nexus-registry.micro-local.net/repository/npm-group
+strict-ssl=false
+```
+
+Login npm registry.
+
+```
+npm login
+```
+
+Navigate to Security -> Realms.
+Add `npm Bearer Token Realm` as active realm.
+
+Publish npm package to nexus registry with following command.
+
+```
+npm publish --registry https://nexus-registry.micro-local.net/repository/npm-hosted
 ```
 
 <br/>
