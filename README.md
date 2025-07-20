@@ -24,7 +24,7 @@
 
 <h2 id="intro">📌 About Project</h2>
 
-This project provides a Docker Compose setup to run **Sonatype Nexus Repository Manager 3 (OSS version)** in a containerized environment for managing software artifacts.
+This project delivers a ready-to-use Docker Compose setup to run **Sonatype Nexus Repository Manager 3 (OSS edition)** in a containerized environment. It enables efficient management of software artifacts with persistent storage and configuration.
 
 <br/>
 
