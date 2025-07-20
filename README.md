@@ -1,22 +1,20 @@
-# Registry Nexus
-
 <h2 id="system-startup">🚀 System Startup</h2>
 
-- Create a new directory named `registry`.
+- Create a working directory.
 
 ```
 mkdir registry
 cd registry
 ```
 
-- Clone project.
+- Clone the repository.
 
 ```
 git clone https://github.com/ahmettoguz/registry-nexus
 cd registry-nexus
 ```
 
-- Switch version.
+- Switch to a latest version.
 
 ```
 git checkout v1.0.0
@@ -29,7 +27,7 @@ cp .env.example .env
 nano .env
 ```
 
-- Create `network-registry` network if not exists.
+- Create docker network.
 
 ```
 docker network create network-registry
@@ -45,69 +43,88 @@ docker compose -p registry up -d service-nexus
 docker logs -f                   container-nexus
 ```
 
-- Get initial admin password and login.
+- Retrieve initial admin password and login to dashboard.
 
 ```
 docker container exec container-nexus cat /nexus-data/admin.password
 ```
 
-- Generate secure password and change initial password.
+- Generate a secure password and change initial password.
 
 ```
 docker run --rm alpine/openssl rand -base64 32
 ```
 
-### Create npm Repositories
+### Create NPM Repositories
 
-After launch registry, create npm repositories.
-Create npm-hosted repository as hosted to be able to create own packages.
-Create npm-proxy repository as proxy to be able to get packages from default remote repository.
-Create npm-group repository as group to be able to manage both own and shared packages.
+- Once Nexus is running, create the following NPM repositories from the Nexus UI:
 
-### Configuration
-Modify `~/.npmrc` file with npm-group url.
+- **npm-hosted:** A hosted repository for your own private packages.
+- **npm-proxy:** A proxy repository to mirror the public npm registry.
+- **npm-group:** A group repository that combines the hosted and proxy repositories for convenience.
+
+### NPM Configuration
+
+- Modify `~/.npmrc` file to save Nexus group repository as your default registry.
 
 ```
 registry=https://nexus-registry.micro-local.net/repository/npm-group
 strict-ssl=false
 ```
 
-Login npm registry.
+- Login npm registries.
 
 ```
 npm login --registry https://nexus-registry.micro-local.net/repository/npm-group
+npm login --registry https://registry.npmjs.org
 ```
 
-Navigate to Security -> Realms.
-Add `npm Bearer Token Realm` as active realm.
+### Enable Token Authentication
 
+- To be able to publish npm packages, activate npm token.
+- Navigate to Security → Realms.
+- Add `npm Bearer Token Realm` as active realm.
 
-### Publish npm Package
+### Publish NPM Package
+
 Publish npm package to nexus registry with following command.
 
 ```
 npm publish --registry https://nexus-registry.micro-local.net/repository/npm-hosted
 ```
 
-### User Management
+<br/>
 
-To be able to modify user access, for example think that there are 2 team as ui and ux and these teams should be able to change and view their repositories and not intercept each other.
-So first create content selector with this expression for ux team.
+<h2 id="user-and-access-management">👥 User and Access Management</h2>
+
+If you want different teams to manage different scopes (e.g., @ui/_, @ux/_), follow these steps:
+
+### Create a Content Selector
+
+- Navigate to Repository → Content Selectors.
+- Example expression for the UX team:
 
 ```
 path =~ "@ux.*"
 ```
 
-Create privilige with type `repository content selectory` and format `npm`with actions: `browse read edit`.
+### Create a Privilege
 
-Create role for that priviliage and create user for that role.
+- Navigate to Security → Privileges.
 
-and this user will be able to interactwith just ux repo.
+- Type: `Repository Content Selector`
 
-<br/>
+- Format: `npm`
 
-<h2 id="contributors">👥 Contributors</h2>
+- Actions: `Browse, Read, Edit`
 
-<a href="https://github.com/ahmettoguz" target="_blank"><img width=60 height=60 src="https://avatars.githubusercontent.com/u/101711642?v=4"></a>
+### Create a Role
 
-### [🔝](#top)
+- Navigate to Security → Roles
+
+- Assign the newly created privilege
+
+### Create a User
+
+- Navigate to Security → Users.
+- Assign the role to the user
