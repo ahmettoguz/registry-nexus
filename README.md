@@ -55,6 +55,10 @@ docker container exec container-nexus cat /nexus-data/admin.password
 docker run --rm alpine/openssl rand -base64 32
 ```
 
+<br/>
+
+<h2 id="npm-management">📦 NPM Management</h2>
+
 ### Create NPM Repositories
 
 - Once Nexus is running, create the following NPM repositories from the Nexus UI:
