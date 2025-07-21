@@ -18,34 +18,6 @@
 
 <br/>
 
-<h2 id="intro">📌 About Project</h2>
-
-This project delivers a ready-to-use Docker Compose setup to run **Sonatype Nexus Repository Manager 3 (OSS edition)** in a containerized environment, enabling efficient management of software artifacts with persistent storage and configuration, providing a guide for setting up and managing npm and Docker repositories, and supporting access management.
-
-<br/>
-
-<h2 id="dashboard">🧭 Dashboard</h2>
-
-<div align="center">
-    <img width=800 src="assets/dashboard/dashboard.png">
-</div>
-
-<br/>
-
-<h2 id="technologies">☄️ Technologies</h2>
-
-&nbsp; [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-
-&nbsp; [![NEXUS](https://img.shields.io/badge/NEXUS-1B1C30.svg?style=for-the-badge&logo=sonatype&logoColor=white)](https://help.sonatype.com)
-
-&nbsp; [![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com)
-
-&nbsp; [![Maven](https://img.shields.io/badge/maven-C71A36.svg?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org)
-
-&nbsp; [![.Env](https://img.shields.io/badge/.ENV-ECD53F.svg?style=for-the-badge&logo=dotenv&logoColor=black)](https://www.ibm.com/docs/bg/aix/7.2?topic=files-env-file)
-
-<br/>
-
 <h2 id="features">🔥 Features</h2>
 
 - **Docker Containerization:** The application is containerized using Docker to ensure consistent deployment, scalability, and isolation across different environments.
