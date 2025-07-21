@@ -1,4 +1,4 @@
-<h1 id="top" align="center">Nexus <br/> 🚢 v1.0.0 🚢</h1>
+<h1 id="top" align="center">Nexus <br/> 🚢 v2.0.0 🚢</h1>
 
 <br>
 
@@ -12,8 +12,37 @@
 
 - [Features](#features)
 - [System Startup](#system-startup)
+- [Docker Repository](#docker-repository)
+- [NPM Repository](#npm-repository)
 - [Access Management](#access-management)
-- [NPM Management](#npm-management)
+
+<br/>
+
+<h2 id="intro">📌 About Project</h2>
+
+This project delivers a ready-to-use Docker Compose setup to run **Sonatype Nexus Repository Manager 3 (OSS edition)** in a containerized environment, enabling efficient management of software artifacts with persistent storage and configuration, providing a guide for setting up and managing npm and Docker repositories, and supporting access management.
+
+<br/>
+
+<h2 id="dashboard">🧭 Dashboard</h2>
+
+<div align="center">
+    <img width=800 src="assets/dashboard/dashboard.png">
+</div>
+
+<br/>
+
+<h2 id="technologies">☄️ Technologies</h2>
+
+&nbsp; [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+
+&nbsp; [![NEXUS](https://img.shields.io/badge/NEXUS-1B1C30.svg?style=for-the-badge&logo=sonatype&logoColor=white)](https://help.sonatype.com)
+
+&nbsp; [![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com)
+
+&nbsp; [![Maven](https://img.shields.io/badge/maven-C71A36.svg?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org)
+
+&nbsp; [![.Env](https://img.shields.io/badge/.ENV-ECD53F.svg?style=for-the-badge&logo=dotenv&logoColor=black)](https://www.ibm.com/docs/bg/aix/7.2?topic=files-env-file)
 
 <br/>
 
@@ -24,6 +53,9 @@
 - **Network Compatibility:** Uses shared Docker network to work with other services.
 - **Persistent Data:** Utilizes a named Docker volume to ensure persistent storage of application data, allowing data to persist across container restarts, rebuilds, and removals.
 - **.env Configuration:** All environment variables are easily configurable using the `.env` file, simplifying configuration management.
+- **Docker Repositories:** Host and manage Docker images with support for hosted, proxy, and group repositories.
+- **npm Repositories:** Manage npm packages with hosted, proxy, and group npm registry capabilities.
+- **Access Management:** Secure management of users, roles, and permissions to control repository access.
 
 <br/>
 
@@ -46,7 +78,7 @@ cd registry-nexus
 - Switch to a latest version.
 
 ```
-git checkout v1.0.0
+git checkout v2.0.0
 ```
 
 - Create `.env` file based on the `.env.example` file with configurations.
@@ -84,9 +116,57 @@ docker container exec container-nexus cat /nexus-data/admin.password
 docker run --rm alpine/openssl rand -base64 32
 ```
 
+- Complete setup wizard with `Disable anonymous access` option.
+
 <br/>
 
-<h2 id="npm-management">📦 NPM Management</h2>
+<details>
+    <summary><h2 id="docker-repository" style="display: inline;">🐳 Docker Repository</h2></summary>
+
+### Create Docker Repositories
+
+- Once Nexus is running, create the following Docker repositories from the Nexus UI:
+
+- **docker-hosted:** A hosted repository for your own private packages.
+- **docker-proxy:** A proxy repository to mirror the public docker registry.
+- **docker-group:** A group repository that combines the hosted and proxy repositories for convenience.
+
+- When creating the `docker-hosted` repository, set the HTTP port to `5000`.
+- When creating the `docker-group` repository, prioritize `docker-hosted` over `docker-proxy` in the repository order.
+
+### Enable Token Authentication
+
+- To be able to publish docker images, activate docker token.
+- Navigate to Security → Realms.
+- Add `Docker Bearer Token Realm` as active realm.
+
+- Login docker registries.
+
+```
+docker login https://index.docker.io/v1
+docker login https://nexus-docker-registry.micro-local.net
+```
+
+### Publish Docker Image
+
+Publish docker image to nexus registry with following command.
+
+```
+docker push nexus-docker-registry.micro-local.net/ahmet/alpine
+```
+
+Pull docker image with following command.
+
+```
+docker pull nexus-docker-registry.micro-local.net/ahmet/alpine
+```
+
+</details>
+
+<br/>
+
+<details>
+    <summary><h2 id="npm-repository" style="display: inline;">🗃️ NPM Repository</h2></summary>
 
 ### Create NPM Repositories
 
@@ -95,6 +175,14 @@ docker run --rm alpine/openssl rand -base64 32
 - **npm-hosted:** A hosted repository for your own private packages.
 - **npm-proxy:** A proxy repository to mirror the public npm registry.
 - **npm-group:** A group repository that combines the hosted and proxy repositories for convenience.
+
+- When creating the `npm-group` repository, prioritize `npm-hosted` over `npm-proxy` in the repository order.
+
+### Enable Token Authentication
+
+- To be able to publish npm packages, activate npm token.
+- Navigate to Security → Realms.
+- Add `npm Bearer Token Realm` as active realm.
 
 ### NPM Configuration
 
@@ -112,12 +200,6 @@ npm login --registry https://nexus-registry.micro-local.net/repository/npm-group
 npm login --registry https://registry.npmjs.org
 ```
 
-### Enable Token Authentication
-
-- To be able to publish npm packages, activate npm token.
-- Navigate to Security → Realms.
-- Add `npm Bearer Token Realm` as active realm.
-
 ### Publish NPM Package
 
 Publish npm package to nexus registry with following command.
@@ -126,9 +208,12 @@ Publish npm package to nexus registry with following command.
 npm publish --registry https://nexus-registry.micro-local.net/repository/npm-hosted
 ```
 
+</details>
+
 <br/>
 
-<h2 id="access-management">🛡️ Access Management</h2>
+<details>
+    <summary><h2 id="access-management" style="display: inline;">🛡️ Access Management</h2></summary>
 
 If you want different teams to manage different scopes (e.g., @ui/_, @ux/_), follow these steps:
 
@@ -153,14 +238,16 @@ path =~ "@ux.*"
 
 ### Create a Role
 
-- Navigate to Security → Roles
+- Navigate to Security → Roles.
 
-- Assign the newly created privilege
+- Assign the newly created privilege.
 
 ### Create a User
 
 - Navigate to Security → Users.
-- Assign the role to the user
+- Assign the role to the user.
+
+</details>
 
 <br/>
 
